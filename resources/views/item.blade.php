@@ -382,7 +382,7 @@
                                     <select name="product_package" class="form-control" id="product_package">
                                         <option value="">Select Package</option>
                                         @foreach($product_packages as $pro_package)
-                                            <option value="{{$pro_package->id}},{{$pro_package->package_price}},{{base64_encode($pro_package->package_price)}}">{{$pro_package->package_name}}</option>
+                                            <option value="{{$pro_package->id}},{{$pro_package->package_price}},{{base64_encode($pro_package->package_price)}},{{$item['view']->product_flash_sale_percentage}}">{{$pro_package->package_name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -1445,8 +1445,9 @@
                 var data = id_price.split(",");
                 var price = data[1];
                 var e_price  = data[2];
+                var s_percentage  = data[3];
                 $('.main_encoded_price').val(e_price+'_regular');
-                $('#product_text_price').text(price);
+                $('#product_text_price').text(price - price*s_percentage/100);
 
             }else{
                 $('#product_text_price').val(e_main_price);
