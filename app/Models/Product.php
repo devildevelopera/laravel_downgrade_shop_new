@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\File;
 
 use Auth;
 
+use Session;
+
 class Product extends Model
 
 {
@@ -332,6 +334,38 @@ class Product extends Model
             ->where('product.product_drop_status', '=', 'no')->where('product_order.order_status', '=', 'pending')->orderBy('product_order.ord_id', 'desc')->get();
 
         $value = $get->count();
+
+        return $value;
+    }
+
+    public static function getcartGuestData()
+
+    {
+        $guest_cart_arr = Session::get('guest_cart_arr', []);
+
+        $guest_cart_product_arr = [];
+
+        foreach($guest_cart_arr as $guest_cart_item) {
+            $value = DB::table('product')->leftJoin('product_packages', 'product.product_id', 'product_packages.product_id')->where('product.product_id', $guest_cart_item['product_id'])->where('product_packages.id', $guest_cart_item['package_id'])->first();
+            $guest_cart_product_arr[] = $value;
+        }
+
+        return $guest_cart_product_arr;
+    }
+
+    public static function getcartGuestCount()
+
+    {
+        $guest_cart_arr = Session::get('guest_cart_arr', []);
+
+        $guest_cart_product_arr = [];
+
+        foreach($guest_cart_arr as $guest_cart_item) {
+            $value = DB::table('product')->leftJoin('product_packages', 'product.product_id', 'product_packages.product_id')->where('product.product_id', $guest_cart_item['product_id'])->where('product_packages.id', $guest_cart_item['package_id'])->first();
+            $guest_cart_product_arr[] = $value;
+        }
+
+        $value = count($guest_cart_product_arr);
 
         return $value;
     }

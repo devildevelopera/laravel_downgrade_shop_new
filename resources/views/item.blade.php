@@ -315,7 +315,7 @@
 
                 <hr class="d-lg-none">
 
-                <form action="{{ route('cart') }}" class="setting_form" method="post" id="order_form" enctype="multipart/form-data">
+                <form action="{{ Auth::check()? route('cart') : route('guest-cart') }}" class="setting_form" method="post" id="order_form" enctype="multipart/form-data">
 
                     {{ csrf_field() }}
 
@@ -524,7 +524,20 @@
 
                         @if(Auth::guest())
 
-                            <a class="btn btn-primary btn-shadow btn-block mt-4" href="{{ URL::to('/login') }}"><i class="dwg-cart font-size-lg mr-2"></i>{{ Helper::translation(4182,$translate) }}</a>
+                            <input type="hidden" name="product_id" value="{{ $item['view']->product_id }}">
+
+                            <input type="hidden" name="product_name" value="{{ $item['view']->product_name }}">
+
+                            <input type="hidden" name="product_user_id" value="{{ $item['view']->user_id }}">
+
+                            <input type="hidden" name="product_token" value="{{ $item['view']->product_token }}">
+
+                            @if($checkif_purchased == 0)
+
+                                    <button type="submit" class="btn btn-primary btn-shadow btn-block mt-4"><i class="dwg-cart font-size-lg mr-2"></i>{{ Helper::translation(4182,$translate) }}
+                                    </button>
+
+                            @endif
 
                         @endif
 

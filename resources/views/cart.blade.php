@@ -74,7 +74,15 @@ use DownGrade\Models\Product;
 
                 <div class="d-none d-sm-block py-1 font-size-ms">{{ Helper::translation(3891,$translate) }} {{ $cart_count }} {{ Helper::translation(3894,$translate) }}</div>
 
+                @if(Auth::check())
+                
                 <div class="py-1"><a class="btn btn-outline-danger btn-sm" href="{{ url('/clear-cart') }}" onClick="return confirm('{{ Helper::translation(3897,$translate) }}');"><i class="dwg-close font-size-xs mr-1 ml-n1"></i>{{ Helper::translation(3900,$translate) }}</a></div>
+                
+                @else
+
+                <div class="py-1"><a class="btn btn-outline-danger btn-sm" href="{{ url('/clear-guest-cart') }}" onClick="return confirm('{{ Helper::translation(3897,$translate) }}');"><i class="dwg-close font-size-xs mr-1 ml-n1"></i>{{ Helper::translation(3900,$translate) }}</a></div>
+
+                @endif
 
               </div>
 
@@ -86,7 +94,15 @@ use DownGrade\Models\Product;
 
               <div class="media d-block d-sm-flex align-items-center py-4 border-bottom">
 
+              @if(Auth::check())
+
               <a class="d-block position-relative mb-3 mb-sm-0 mr-sm-4 mx-auto cart-img" href="{{ url('/cart') }}/{{ base64_encode($cart->ord_id) }}" onClick="return confirm('{{ Helper::translation(3903,$translate) }}');">
+
+              @else
+
+              <a class="d-block position-relative mb-3 mb-sm-0 mr-sm-4 mx-auto cart-img" href="{{ url('/guest-cart') }}/{{ base64_encode($cart->product_id) }}" onClick="return confirm('{{ Helper::translation(3903,$translate) }}');">
+
+              @endif
 
               @if($cart->product_image!='')
 
@@ -103,18 +119,48 @@ use DownGrade\Models\Product;
                 <div class="media-body text-center text-sm-left">
 
                   <h3 class="h6 product-title mb-2"><a href="{{ url('/item') }}/{{ $cart->product_slug }}">{{ $cart->product_name }}
-                  @if($cart->package_id)
-                      - Package ({{Product::getproductsinglePackagename($cart->package_id)}})
+
+                  @if(Auth::check())
+                    @if($cart->package_id)
+                        - Package ({{Product::getproductsinglePackagename($cart->package_id)}})
+                    @endif
+                  @else
+                    @if($cart->package_name)
+                        - Package ({{$cart->package_name}})
+                    @endif
                   @endif
+
                   </a></h3>
+                  
+                  <?php
+                  if(Auth::check()) {
+                    $item_price= $cart->product_price;
+                  } else {
+                    if($cart->package_name) {
+                      if($cart->product_flash_sale) {
+                        $item_price = round($cart->package_price - ($cart->package_price * $cart->product_flash_sale_percentage / 100));
+                      } else {
+                        $item_price = $cart->package_price;
+                      }
+                    } else {
+                      $item_price = $cart->regular_price;
+                    }
+                  }
+                ?>
 
-                  <div class="d-inline-block text-accent">{{ $allsettings->site_currency_symbol }} {{ $cart->product_price }}</div><a class="d-inline-block text-accent font-size-ms border-left ml-2 pl-2" href="{{ url('/item') }}/{{ $cart->product_slug }}">{{ $cart->license }}@if($cart->license == 'regular') ({{ __('6 months') }}) @elseif($cart->license == 'extended') ({{ __('12 months') }}) @endif</a>
-
+                  <div class="d-inline-block text-accent">{{ $allsettings->site_currency_symbol }} {{ $item_price }}</div>
+                  
+                  @if(Auth::check())
+                  
+                  <a class="d-inline-block text-accent font-size-ms border-left ml-2 pl-2" href="{{ url('/item') }}/{{ $cart->product_slug }}">{{ $cart->license }}@if($cart->license == 'regular') ({{ __('6 months') }}) @elseif($cart->license == 'extended') ({{ __('12 months') }}) @endif</a>
+                  
+                  @endif
+                  
                 </div>
 
               </div>
 
-              @php $subtotal += $cart->product_price; @endphp
+              @php $subtotal += $item_price; @endphp
 
               @endforeach
 
@@ -170,8 +216,16 @@ use DownGrade\Models\Product;
 
                 </form>
 
-              </div><?php */?><a class="btn btn-primary btn-shadow btn-block mt-4" href="{{ url('/checkout') }}"><i class="dwg-locked font-size-lg mr-2"></i>{{ Helper::translation(3915,$translate) }}</a>
+              </div><?php */?>
+              @if (Auth::check())
 
+              <a class="btn btn-primary btn-shadow btn-block mt-4" href="{{ url('/checkout') }}"><i class="dwg-locked font-size-lg mr-2"></i>{{ Helper::translation(3915,$translate) }}</a>
+              
+              @else
+
+              <a class="btn btn-primary btn-shadow btn-block mt-4" href="{{ url('/login') }}"><i class="dwg-locked font-size-lg mr-2"></i>{{ Helper::translation(3915,$translate) }}</a>
+              
+              @endif
               <div class="text-center pt-2"><small class="text-form text-muted">{{ Helper::translation(3918,$translate) }}</small></div>
 
             </div>

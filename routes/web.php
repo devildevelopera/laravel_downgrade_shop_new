@@ -283,7 +283,17 @@ Route::group(['middleware' => ['XSS']], function () {
 	/* cart */
 
 
+	/* guest-cart */
 
+	Route::get('/guest-cart', 'GuestController@show_cart');
+
+	Route::get('/guest-cart/{product_id}', 'GuestController@remove_cart_item');
+
+	Route::post('/guest-cart', ['as' => 'guest-cart','uses'=>'GuestController@view_cart']);
+
+	Route::get('/clear-guest-cart', 'GuestController@clear_cart');
+
+	/* guest-cart */
 
 
 	/* checkout */
