@@ -786,9 +786,15 @@ class ProductController extends Controller
 
 		    	$convert = Currency::convert($site_currency,'NGN',$final_amount);
 
-				// $convertedAmount = $convert['convertedAmount'];
+                if($convert->error==true) {
 
-				$convertedAmount = 100.00;
+                    $convertedAmount = $final_amount;
+
+                } else { 
+
+                	$convertedAmount = $convert['convertedAmount'];
+
+                }
 
 				$callback = $website_url.'/paystack';
 
@@ -828,7 +834,15 @@ class ProductController extends Controller
 
 				$convert = Currency::convert($site_currency,'USD',$final_amount);
 
-				$convertedAmount = $convert['convertedAmount'];
+				if($convert->error==true) {
+
+                    $convertedAmount = $final_amount;
+
+                } else { 
+
+                	$convertedAmount = $convert['convertedAmount'];
+
+                }
 
 				$csf_token = csrf_token();
 
