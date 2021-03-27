@@ -80,7 +80,7 @@
 
                 <div class="navbar-tool-icon-box"><i class="navbar-tool-icon dwg-heart"></i></div></a>
 
-                @if(Auth::guest()){{ url('/product') }}
+                @if(Auth::guest())
 
                 <a class="navbar-tool ml-1 mr-n1" href="{{ URL::to('/login') }}"><span class="navbar-tool-tooltip">{{ Helper::translation(4029,$translate) }}</span>
 
@@ -88,7 +88,7 @@
 
                 @endif
 
-                @if (Auth::check()){{ url('/product') }}
+                @if (Auth::check())
 
                 <div class="navbar-tool dropdown ml-2">
 
@@ -142,7 +142,15 @@
 
               @endif
 
-              <div class="navbar-tool dropdown ml-3"><a class="navbar-tool-icon-box bg-secondary dropdown-toggle" href="{{ url('/cart') }}"><span class="navbar-tool-label">{{ $cartcount }}</span><i class="navbar-tool-icon dwg-cart"></i></a>
+              @if(Auth::check())
+
+                <div class="navbar-tool dropdown ml-3"><a class="navbar-tool-icon-box bg-secondary dropdown-toggle" href="{{url('/cart')}}"><span class="navbar-tool-label">{{ $cartcount }}</span><i class="navbar-tool-icon dwg-cart"></i></a>
+              
+              @else
+              
+                <div class="navbar-tool dropdown ml-3"><a class="navbar-tool-icon-box bg-secondary dropdown-toggle" href="{{url('/guest-cart')}}"><span class="navbar-tool-label">{{ $cartcount }}</span><i class="navbar-tool-icon dwg-cart"></i></a>
+              
+              @endif
 
                 <!-- Cart dropdown-->
 
@@ -154,15 +162,23 @@
 
                     <div data-simplebar data-simplebar-auto-hide="false">
 
-                      @php $subtotall = 0; @endphp
+                      @php $subtotall = 0; $item_price = 0; @endphp
 
                       @foreach($cartitem['item'] as $cart)
 
                       <div class="widget-cart-item pb-2 mb-2 border-bottom">
 
-                        <a href="{{ url('/cart') }}/{{ base64_encode($cart->ord_id) }}" class="close text-danger" onClick="return confirm('{{ __('Are you sure you want to delete?') }}');"><span aria-hidden="true">&times;</span></a>
+                        @if(Auth::check())
 
-                        <div class="media align-items-center"><a class="d-block mr-2" href="{{ url('/item') }}/{{ $cart->product_slug }}">
+                          <a href="{{ url('/cart') }}/{{ base64_encode($cart->ord_id) }}" class="close text-danger" onClick="return confirm('{{ __('Are you sure you want to delete?') }}');"><span aria-hidden="true">&times;</span></a>
+
+                        @else
+
+                          <a href="{{ url('/guest-cart') }}/{{ base64_encode($cart->product_id) }}" class="close text-danger" onClick="return confirm('{{ __('Are you sure you want to delete?') }}');"><span aria-hidden="true">&times;</span></a>
+
+                        @endif
+
+                        <div class="media align-items-center"><a class="d-block mr-2" href="{{ url('/product') }}/{{ $cart->product_slug }}">
 
                         @if($cart->product_image!='')
 
@@ -178,9 +194,25 @@
 
                           <div class="media-body">
 
-                            <h6 class="widget-product-title"><a href="{{ url('/item') }}/{{ $cart->product_slug }}">{{ $cart->product_name }}</a></h6>
+                            <h6 class="widget-product-title"><a href="{{ url('/product') }}/{{ $cart->product_slug }}">{{ $cart->product_name }}</a></h6>
 
-                            <div class="widget-product-meta"><span class="text-accent mr-2">{{ $allsettings->site_currency_symbol }} {{ $cart->product_price }}</span></div>
+                            <?php
+                            if(Auth::check()) {
+                              $item_price = $cart->product_price;
+                            } else {
+                              if($cart->package_name) {
+                                if($cart->product_flash_sale) {
+                                  $item_price = round($cart->package_price - ($cart->package_price * $cart->product_flash_sale_percentage / 100));
+                                } else {
+                                  $item_price = $cart->package_price;
+                                }
+                              } else {
+                                $item_price = $cart->regular_price;
+                              }
+                            }
+                            ?>
+
+                            <div class="widget-product-meta"><span class="text-accent mr-2">{{ $allsettings->site_currency_symbol }} {{ $item_price }}</span></div>
 
                           </div>
 
@@ -188,7 +220,7 @@
 
                       </div>
 
-                      @php $subtotall += $cart->product_price; @endphp
+                      @php $subtotall += $item_price; @endphp
 
                       @endforeach
 
@@ -196,7 +228,26 @@
 
                     <div class="d-flex flex-wrap justify-content-between align-items-center py-3">
 
-                      <div class="font-size-sm mr-2 py-2"><span class="text-muted">{{ Helper::translation(3960,$translate) }}</span><span class="text-accent font-size-base ml-1">{{ $allsettings->site_currency_symbol }} {{ $subtotall }}</span></div><a class="btn btn-outline-secondary btn-sm" href="{{ url('/cart') }}">{{ Helper::translation(4113,$translate) }}<i class="dwg-arrow-right ml-1 mr-n1"></i></a></div><a class="btn btn-primary btn-sm btn-block" href="{{ url('/checkout') }}"><i class="dwg-card mr-2 font-size-base align-middle"></i>{{ Helper::translation(3924,$translate) }}</a>
+                      <div class="font-size-sm mr-2 py-2">
+
+                        <span class="text-muted">{{ Helper::translation(3960,$translate) }}</span>
+                        <span class="text-accent font-size-base ml-1">{{ $allsettings->site_currency_symbol }} {{ $subtotall }}</span>
+
+                      </div>
+
+                        @if(Auth::check())
+
+                        <a class="btn btn-outline-secondary btn-sm" href="{{ url('/cart') }}">{{ Helper::translation(4113,$translate) }}<i class="dwg-arrow-right ml-1 mr-n1"></i></a>
+                        
+                        @else
+                        
+                        <a class="btn btn-outline-secondary btn-sm" href="{{ url('/guest-cart') }}">{{ Helper::translation(4113,$translate) }}<i class="dwg-arrow-right ml-1 mr-n1"></i></a>
+                        
+                        @endif
+
+                    </div>
+
+                      <a class="btn btn-primary btn-sm btn-block" href="{{ url('/checkout') }}"><i class="dwg-card mr-2 font-size-base align-middle"></i>{{ Helper::translation(3924,$translate) }}</a>
 
                   </div>
 

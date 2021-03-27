@@ -36,7 +36,7 @@
 
         </div>
 
-        <div class="order-lg-1 pr-lg-4 text-center text-lg-left">{{ url('/product') }}
+        <div class="order-lg-1 pr-lg-4 text-center text-lg-left">
 
           <h1 class="h3 mb-0 text-white">{{ Helper::translation(4035,$translate) }}</h1>
 
@@ -44,7 +44,7 @@
 
       </div>
 
-    </div>{{ url('/product') }}
+    </div>
 
 <div class="container mb-5 pb-3">
 
@@ -138,7 +138,7 @@
 
                       <i class="sr-star dwg-star-filled active"></i>
 
-                      <i class="sr-star dwg-star-filled active"></i{{ url('/product') }}
+                      <i class="sr-star dwg-star-filled active"></i>
 
                       <i class="sr-star dwg-star"></i>
 
@@ -191,7 +191,7 @@
                       <i class="sr-star dwg-star"></i>
 
                       <i class="sr-star dwg-star"></i>
-{{ url('/product') }}
+
                       <i class="sr-star dwg-star"></i>
 
                       <i class="sr-star dwg-star"></i>
