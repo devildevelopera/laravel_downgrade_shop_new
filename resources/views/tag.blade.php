@@ -62,7 +62,7 @@
 
         @php
 
-        $price = Helper::price_info($featured->product_flash_sale,$featured->regular_price);
+        $price = Helper::price_info($featured->product_flash_sale,$featured->regular_price,$featured->product_flash_sale_percentage);
 
         $count_rating = Helper::count_rating($featured->ratings);
 

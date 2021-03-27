@@ -352,12 +352,8 @@
 
                         <?php if ($item['view']->product_flash_sale == 1) {
                             $item_price = round($item['view']->regular_price - ($item['view']->regular_price * $item['view']->product_flash_sale_percentage / 100));
-
-//                            $extend_item_price = round($item['view']->extended_price / 2);
                         } else {
                             $item_price = $item['view']->regular_price;
-
-//                            $extend_item_price = $item['view']->extended_price;
                         }
                         ?>
 
@@ -1255,7 +1251,7 @@
 
             @php
 
-                $price = Helper::price_info($featured->product_flash_sale,$featured->regular_price);
+                $price = Helper::price_info($featured->product_flash_sale,$featured->regular_price,$featured->product_flash_sale_percentage);
 
                 $count_rating = Helper::count_rating($featured->ratings);
 
