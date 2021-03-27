@@ -56,9 +56,13 @@ Route::group(['middleware' => ['XSS']], function () {
 	Route::get('/logout', 'Admin\CommonController@logout');
 
 
+	/* guest registeration */
 
+	Route::get('/guest', 'GuestController@guest_view');
 
+	Route::post('/guest', ['as' => 'guest', 'uses' => 'GuestController@guest_register']);
 
+	/* guest registeration */
 
 
 	/* email verification */
@@ -305,16 +309,25 @@ Route::group(['middleware' => ['XSS']], function () {
 	/* checkout */
 
 
+	/* guest checkout */
 
+	Route::get('/guest-checkout', 'GuestController@show_checkout');
+
+	Route::post('/guest-checkout', ['as' => 'guest-checkout','uses'=>'GuestController@view_checkout']);
+
+	/* guest checkout */
 
 
 	/* success */
 
 	Route::get('/success/{ord_token}', 'ProductController@paypal_success');
 
+	Route::get('/guest-success/{ord_token}', 'GuestController@paypal_success');
+
 	Route::get('/cancel', 'CommonController@payment_cancel');
 
 	Route::post('/coinbase_webhook', ['as' => 'coinbase_webhook','uses'=>'CommonController@coinbase_webhook']);
+
 
 	/* success */
 
@@ -333,7 +346,12 @@ Route::group(['middleware' => ['XSS']], function () {
 
 	Route::post('/paystack', ['as' => 'paystack','uses'=>'ProductController@redirectToGateway']);
 
+	Route::post('/guest-paystack', ['as' => 'guest-paystack','uses'=>'GuestController@redirectToGateway']);
+
+
 	Route::get('/paystack', 'ProductController@handleGatewayCallback');
+
+	Route::get('/guest-paystack', 'GuestController@handleGatewayCallback');
 
 	/* paystack */
 
@@ -341,6 +359,9 @@ Route::group(['middleware' => ['XSS']], function () {
 	/* razorpay */
 
 	Route::post('/razorpay', ['as' => 'razorpay','uses'=>'ProductController@razorpay_payment']);
+
+	Route::post('/guest-razorpay', ['as' => 'guest-razorpay','uses'=>'GuestController@razorpay_payment']);
+
 
 /* razorpay */
 

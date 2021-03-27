@@ -314,10 +314,13 @@ class Product extends Model
             ->update($updatedata);
     }
 
-    public static function getcartData()
+    public static function getcartData($user_id = 0)
 
     {
-        $user_id = Auth::user()->id;
+
+        if(!$user_id) {
+            $user_id = Auth::user()->id;
+        }
 
         $value = DB::table('product_order')->join('product', 'product.product_id', 'product_order.product_id')->where('product_order.user_id', '=', $user_id)->where('product.product_status', '=', 1)
             ->where('product.product_drop_status', '=', 'no')->where('product_order.order_status', '=', 'pending')->orderBy('product_order.ord_id', 'desc')->get();
@@ -325,10 +328,12 @@ class Product extends Model
         return $value;
     }
 
-    public static function getcartCount()
+    public static function getcartCount($user_id = 0)
 
     {
-        $user_id = Auth::user()->id;
+        if(!$user_id) {
+            $user_id = Auth::user()->id;
+        }
 
         $get = DB::table('product_order')->join('product', 'product.product_id', 'product_order.product_id')->where('product_order.user_id', '=', $user_id)->where('product.product_status', '=', 1)
             ->where('product.product_drop_status', '=', 'no')->where('product_order.order_status', '=', 'pending')->orderBy('product_order.ord_id', 'desc')->get();
@@ -341,12 +346,19 @@ class Product extends Model
     public static function getcartGuestData()
 
     {
+        // Session::forget('guest_cart_arr');
+        // Session::save();
+
         $guest_cart_arr = Session::get('guest_cart_arr', []);
 
         $guest_cart_product_arr = [];
 
         foreach($guest_cart_arr as $guest_cart_item) {
-            $value = DB::table('product')->leftJoin('product_packages', 'product.product_id', 'product_packages.product_id')->where('product.product_id', $guest_cart_item['product_id'])->where('product_packages.id', $guest_cart_item['package_id'])->first();
+            if($guest_cart_item['package_id']) {
+                $value = DB::table('product')->leftJoin('product_packages', 'product.product_id', 'product_packages.product_id')->where('product.product_id', $guest_cart_item['product_id'])->where('product_packages.id', $guest_cart_item['package_id'])->select('product.*', 'product_packages.id','product_packages.package_name','product_packages.package_price')->first();
+            } else {
+                $value = DB::table('product')->leftJoin('product_packages', 'product.product_id', 'product_packages.product_id')->where('product.product_id', $guest_cart_item['product_id'])->select('product.*', 'product_packages.id','product_packages.package_name','product_packages.package_price')->first();
+            }
             $guest_cart_product_arr[] = $value;
         }
 
@@ -356,12 +368,17 @@ class Product extends Model
     public static function getcartGuestCount()
 
     {
+
         $guest_cart_arr = Session::get('guest_cart_arr', []);
 
         $guest_cart_product_arr = [];
 
         foreach($guest_cart_arr as $guest_cart_item) {
-            $value = DB::table('product')->leftJoin('product_packages', 'product.product_id', 'product_packages.product_id')->where('product.product_id', $guest_cart_item['product_id'])->where('product_packages.id', $guest_cart_item['package_id'])->first();
+            if($guest_cart_item['package_id']) {
+                $value = DB::table('product')->leftJoin('product_packages', 'product.product_id', 'product_packages.product_id')->where('product.product_id', $guest_cart_item['product_id'])->where('product_packages.id', $guest_cart_item['package_id'])->select('product.*', 'product_packages.id','product_packages.package_name','product_packages.package_price')->first();
+            } else {
+                $value = DB::table('product')->leftJoin('product_packages', 'product.product_id', 'product_packages.product_id')->where('product.product_id', $guest_cart_item['product_id'])->select('product.*', 'product_packages.id','product_packages.package_name','product_packages.package_price')->first();
+            }
             $guest_cart_product_arr[] = $value;
         }
 

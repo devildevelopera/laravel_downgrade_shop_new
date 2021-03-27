@@ -59,7 +59,7 @@ use DownGrade\Models\Product;
 
           <section class="col-lg-8 pt-2 pt-lg-4 pb-4 mb-3">
 
-          <form action="{{ route('checkout') }}" class="needs-validation" id="checkout_form" method="post" enctype="multipart/form-data">
+          <form action="{{ Auth::check()? route('checkout') : route('guest-checkout') }}" class="needs-validation" id="checkout_form" method="post" enctype="multipart/form-data">
 
             {{ csrf_field() }}
 
@@ -73,6 +73,8 @@ use DownGrade\Models\Product;
 
               <div class="row pb-4">
 
+              @if(Auth::check())
+
                 <div class="col-sm-6 form-group">
 
                   <label for="mc-fn">{{ Helper::translation(3930,$translate) }} <span class='text-danger'>*</span></label>
@@ -85,7 +87,7 @@ use DownGrade\Models\Product;
 
                   <label for="mc-ln">{{ Helper::translation(3933,$translate) }} <span class='text-danger'>*</span></label>
 
-                  <input type="text" id="order_lastname" name="order_lastname" class="form-control" data-bvalidator="required">
+                  <input type="text" id="order_lastname" name="order_lastname" class="form-control">
 
                 </div>
 
@@ -96,6 +98,8 @@ use DownGrade\Models\Product;
                   <input type="text" id="order_email" class="form-control" name="order_email" value="{{ Auth::user()->email }}" data-bvalidator="required,email">
 
                 </div>
+
+                @endif
 
                 {{-- <div class="col-sm-6 form-group">
 
