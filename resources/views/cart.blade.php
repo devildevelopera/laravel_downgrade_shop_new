@@ -118,7 +118,7 @@ use DownGrade\Models\Product;
 
                 <div class="media-body text-center text-sm-left">
 
-                  <h3 class="h6 product-title mb-2"><a href="{{ url('/item') }}/{{ $cart->product_slug }}">{{ $cart->product_name }}
+                  <h3 class="h6 product-title mb-2"><a href="{{ url('/product') }}/{{ $cart->product_slug }}">{{ $cart->product_name }}
 
                   @if(Auth::check())
                     @if($cart->package_id)
@@ -152,10 +152,10 @@ use DownGrade\Models\Product;
                   
                   @if(Auth::check())
                   
-                  <a class="d-inline-block text-accent font-size-ms border-left ml-2 pl-2" href="{{ url('/item') }}/{{ $cart->product_slug }}">{{ $cart->license }}@if($cart->license == 'regular') ({{ __('6 months') }}) @elseif($cart->license == 'extended') ({{ __('12 months') }}) @endif</a>
+                  <a class="d-inline-block text-accent font-size-ms border-left ml-2 pl-2" href="{{ url('/product') }}/{{ $cart->product_slug }}">{{ $cart->license }}@if($cart->license == 'regular') ({{ __('6 months') }}) @elseif($cart->license == 'extended') ({{ __('12 months') }}) @endif</a>
                   
                   @endif
-                  
+
                 </div>
 
               </div>

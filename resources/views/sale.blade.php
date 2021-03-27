@@ -96,7 +96,7 @@
 
               @if($featured->user_id != Auth::user()->id)
 
-              <a class="btn-wishlist btn-sm" href="{{ url('/item') }}/{{ base64_encode($featured->product_id) }}/favorite/{{ base64_encode($featured->product_liked) }}"><i class="dwg-heart"></i></a>
+              <a class="btn-wishlist btn-sm" href="{{ url('/product') }}/{{ base64_encode($featured->product_id) }}/favorite/{{ base64_encode($featured->product_liked) }}"><i class="dwg-heart"></i></a>
 
               @endif
 

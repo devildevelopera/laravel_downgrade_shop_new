@@ -270,7 +270,7 @@
                                 @if($item['view']->user_id != Auth::user()->id)
 
                                     <a class="btn btn-outline-accent btn-sm"
-                                       href="{{ url('/item') }}/{{ base64_encode($item['view']->product_id) }}/favorite/{{ base64_encode($item['view']->product_liked) }}"><i
+                                       href="{{ url('/product') }}/{{ base64_encode($item['view']->product_id) }}/favorite/{{ base64_encode($item['view']->product_liked) }}"><i
                                             class="dwg-heart font-size-lg mr-2"></i>{{ Helper::translation(4149,$translate) }}</a>
 
                                 @endif
@@ -1295,7 +1295,7 @@
 
                             @if($featured->user_id != Auth::user()->id)
 
-                                <a class="btn-wishlist btn-sm" href="{{ url('/item') }}/{{ base64_encode($featured->product_id) }}/favorite/{{ base64_encode($featured->product_liked) }}"><i
+                                <a class="btn-wishlist btn-sm" href="{{ url('/product') }}/{{ base64_encode($featured->product_id) }}/favorite/{{ base64_encode($featured->product_liked) }}"><i
                                         class="dwg-heart"></i></a>
 
                             @endif

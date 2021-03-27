@@ -177,7 +177,7 @@ use DownGrade\Models\Product;
 
                 <div class="media align-items-center pb-2 border-bottom">
 
-                <a class="d-block mr-2" href="{{ url('/item') }}/{{ $cart->product_slug }}">
+                <a class="d-block mr-2" href="{{ url('/product') }}/{{ $cart->product_slug }}">
 
                 @if($cart->product_image!='')
 
@@ -193,7 +193,7 @@ use DownGrade\Models\Product;
 
                   <div class="media-body pl-1">
 
-                    <h6 class="widget-product-title"><a href="{{ url('/item') }}/{{ $cart->product_slug }}">{{ $cart->product_name }}</a></h6>
+                    <h6 class="widget-product-title"><a href="{{ url('/product') }}/{{ $cart->product_slug }}">{{ $cart->product_name }}</a></h6>
 
                     <div class="widget-product-meta"><span class="text-accent border-right pr-2 mr-2">{{ $allsettings->site_currency_symbol }} {{ $cart->product_price }}</span><span class="font-size-xs text-muted">{{ $cart->license }}@if($cart->license == 'regular') ({{ __('6 months') }}) @elseif($cart->license == 'extended') ({{ __('12 months') }}) @endif</span></div>
 
@@ -405,7 +405,7 @@ use DownGrade\Models\Product;
 
                 <div class="media align-items-center pb-3 mb-3 border-bottom">
 
-                <a class="d-block mr-2" href="{{ url('/item') }}/{{ $cart->product_slug }}">
+                <a class="d-block mr-2" href="{{ url('/product') }}/{{ $cart->product_slug }}">
 
                 @if($cart->product_image!='')
 
@@ -421,7 +421,7 @@ use DownGrade\Models\Product;
 
                   <div class="media-body pl-1">
 
-                    <h6 class="widget-product-title"><a href="{{ url('/item') }}/{{ $cart->product_slug }}">{{ $cart->product_name }}
+                    <h6 class="widget-product-title"><a href="{{ url('/product') }}/{{ $cart->product_slug }}">{{ $cart->product_name }}
                        @if($cart->package_id)
                       - Package ({{Product::getproductsinglePackagename($cart->package_id)}})
                       @endif
