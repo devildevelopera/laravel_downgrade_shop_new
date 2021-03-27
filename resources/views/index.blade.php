@@ -701,19 +701,19 @@
 
 @endif
 
-@if(count($finals['well']) != 0)
+@if(count($newest['product']) != 0)
 
-    <section class="container mb-lg-1 flash-sale" data-aos="fade-up" data-aos-delay="200">
+    <section class="container mb-lg-1" data-aos="fade-up" data-aos-delay="200">
 
         <!-- Heading-->
 
         <div class="d-flex flex-wrap justify-content-between align-items-center pt-1 border-bottom pb-4 mb-4">
 
-            <h2 class="h3 mb-0 pt-3 mr-2" data-aos="fade-down" data-aos-delay="100">{{ Helper::translation(4095,$translate) }}</h2>
+            <h2 class="h3 mb-0 pt-3 mr-2" data-aos="fade-down" data-aos-delay="100">{{ Helper::translation(4119,$translate) }}</h2>
 
             <div class="pt-3" data-aos="fade-down" data-aos-delay="100">
 
-                <a class="btn btn-outline-accent" href="{{ URL::to('/free-items') }}">{{ Helper::translation(4134,$translate) }}<i class="dwg-arrow-right font-size-ms ml-1"></i></a>
+                <a class="btn btn-outline-accent" href="{{ URL::to('/new-releases') }}">{{ Helper::translation(4134,$translate) }}<i class="dwg-arrow-right font-size-ms ml-1"></i></a>
 
             </div>
 
@@ -727,7 +727,7 @@
 
             @php $no = 1; @endphp
 
-            @foreach($finals['well'] as $featured)
+            @foreach($newest['product'] as $featured)
 
                 @php
 
@@ -889,9 +889,8 @@
                                 </div>
 
                                 <div>@if($featured->product_flash_sale == 1)
-                                        <del class="price-old">{{ $allsettings->site_currency_symbol }}{{ $price }}</del> @else
-                                        <del class="price-old">{{ $allsettings->site_currency_symbol }}{{ $featured->regular_price }}</del> @endif <span
-                                        class="price-badge rounded-sm py-1 px-2">{{ Helper::translation(4098,$translate) }}</span></div>
+                                        <del class="price-old">{{ $allsettings->site_currency_symbol }}{{ $featured->regular_price }}</del>@endif <span
+                                        class="bg-faded-accent text-accent price-badge rounded-sm py-1 px-2">{{ $allsettings->site_currency_symbol }}{{ $price }}</span></div>
 
                             </div>
 
@@ -913,17 +912,17 @@
 
 @endif
 
-@if(count($newest['product']) != 0)
+@if(count($finals['well']) != 0)
 
-    <section class="container pb-4 pb-md-5" data-aos="fade-up" data-aos-delay="200">
+    <section class="container pb-4 pb-md-5 flash-sale" data-aos="fade-up" data-aos-delay="200">
 
         <div class="d-flex flex-wrap justify-content-between align-items-center pt-1 border-bottom pb-4 mb-4">
 
-            <h2 class="h3 mb-0 pt-3 mr-2" data-aos="fade-down" data-aos-delay="100">{{ Helper::translation(4119,$translate) }}</h2>
+            <h2 class="h3 mb-0 pt-3 mr-2" data-aos="fade-down" data-aos-delay="100">{{ Helper::translation(4095,$translate) }}</h2>
 
             <div class="pt-3" data-aos="fade-down" data-aos-delay="100">
 
-                <a class="btn btn-outline-accent" href="{{ URL::to('/new-releases') }}">{{ Helper::translation(4134,$translate) }}<i class="dwg-arrow-right font-size-ms ml-1"></i></a>
+                <a class="btn btn-outline-accent" href="{{ URL::to('/free-items') }}">{{ Helper::translation(4134,$translate) }}<i class="dwg-arrow-right font-size-ms ml-1"></i></a>
 
             </div>
 
@@ -935,7 +934,7 @@
 
             @php $no = 1; @endphp
 
-            @foreach($newest['product'] as $featured)
+            @foreach($finals['well'] as $featured)
 
                 @php
 
@@ -969,8 +968,20 @@
 
                                 <h6 class="widget-product-title"><a href="{{ URL::to('/product') }}/{{ $featured->product_slug }}">{{ $featured->product_name }}</a></h6>
 
-                                <div class="widget-product-meta"><span class="text-accent">{{ $allsettings->site_currency_symbol }}{{ $price }}</span> @if($featured->product_flash_sale == 1)
-                                        <del class="price-old">{{ $allsettings->site_currency_symbol }}{{ $featured->regular_price }}</del>@endif</div>
+                                <div class="widget-product-meta">
+                                    @if($featured->product_flash_sale == 1)
+                                        <del class="price-old">
+                                            {{ $allsettings->site_currency_symbol }}{{ $price }}
+                                        </del>
+                                    @else
+                                        <del class="price-old">
+                                            {{ $allsettings->site_currency_symbol }}{{ $featured->regular_price }}
+                                        </del>
+                                    @endif
+                                        <span class="price-badge rounded-sm py-1 px-2">
+                                            {{ Helper::translation(4098,$translate) }}
+                                        </span>
+                                </div>
 
                             </div>
 
